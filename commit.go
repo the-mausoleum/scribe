@@ -1,4 +1,4 @@
-package modules
+package main
 
 import (
 	"errors"
@@ -8,22 +8,16 @@ import (
 	"strings"
 )
 
-type commit struct {
-	project string
-	hours   int
-	message string
-}
-
-func parseArgs(args []string) (commit, error) {
+func parseArgs(args []string) (Commit, error) {
 	if len(args) < 2 {
-		return commit{}, errors.New("Not enough arguments.")
+		return Commit{}, errors.New("Not enough arguments.")
 	}
 
 	var project string = args[0]
 	hours, err := strconv.Atoi(args[1])
 
 	if err != nil {
-		return commit{}, err
+		return Commit{}, err
 	}
 
 	var message string
@@ -34,10 +28,10 @@ func parseArgs(args []string) (commit, error) {
 		message = ""
 	}
 
-	return commit{project, hours, message}, nil
+	return Commit{project, hours, message}, nil
 }
 
-func Commit(args []string) {
+func DoCommit(args []string) {
 	commit, err := parseArgs(args)
 	if err != nil {
 		fmt.Println(err)
@@ -45,4 +39,6 @@ func Commit(args []string) {
 	}
 
 	fmt.Println(commit)
+
+	Connect()
 }
