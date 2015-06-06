@@ -40,11 +40,15 @@ func main() {
 
 	Connect()
 
+    args := os.Args[2:]
+
 	switch strings.ToLower(os.Args[1]) {
 	case "commit":
-		DoCommit(os.Args[2:])
+		DoCommit(args)
+    case "rename":
+        DoRename(args)
 	case "delete":
-		DoDelete(os.Args[2:])
+		DoDelete(args)
 	default:
 		fmt.Printf(Usage, os.Args[0])
 		os.Exit(0)

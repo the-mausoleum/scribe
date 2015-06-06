@@ -64,6 +64,38 @@ func CreateCommit(commit Commit) {
 	transaction.Commit()
 }
 
+func RenameProject(project, newName string) {
+    db, err := sql.Open("sqlite3", "./scribe.db")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    defer db.Close()
+
+    transaction, err := db.Begin()
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    statement, err := transaction.Prepare(`
+        UPDATE records
+        SET project = ?
+        WHERE project = ?;
+    `)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    defer statement.Close()
+
+    _, err = statement.Exec(newName, project)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    transaction.Commit()
+}
+
 func DeleteProject(project string) {
 	db, err := sql.Open("sqlite3", "./scribe.db")
 	if err != nil {
