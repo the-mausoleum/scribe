@@ -1,4 +1,4 @@
 GO ?= go
 
 fmt:
-	$(GO) fmt ./...
+	$(GO)fmt -w -l *.go
