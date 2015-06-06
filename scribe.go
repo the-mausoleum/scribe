@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/maxdeviant/scribe/modules"
 	"os"
+	"strings"
 )
 
 const (
@@ -33,7 +35,13 @@ func main() {
 		fmt.Printf("%s %s\n", os.Args[0], Version)
 		os.Exit(0)
 	case *helpFlag:
-		fallthrough
+		fmt.Printf(Usage, os.Args[0])
+		os.Exit(0)
+	}
+
+	switch strings.ToLower(os.Args[1]) {
+	case "commit":
+		modules.Commit(os.Args)
 	default:
 		fmt.Printf(Usage, os.Args[0])
 		os.Exit(0)
