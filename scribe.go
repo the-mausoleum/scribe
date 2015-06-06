@@ -41,7 +41,7 @@ func main() {
 
 	switch strings.ToLower(os.Args[1]) {
 	case "commit":
-		modules.Commit(os.Args)
+        modules.Commit(os.Args[2:])
 	default:
 		fmt.Printf(Usage, os.Args[0])
 		os.Exit(0)
