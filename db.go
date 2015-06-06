@@ -6,6 +6,7 @@ import (
 	//"fmt"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
+	"time"
 )
 
 func Connect() {
@@ -20,7 +21,8 @@ func Connect() {
         CREATE TABLE IF NOT EXISTS records (
             id INTEGER PRIMARY KEY,
             project TEXT,
-            hours INTEGER
+            hours INTEGER,
+            message TEXT,
             timestamp TIMESTAMP
         );
     `
@@ -31,6 +33,33 @@ func Connect() {
 	}
 }
 
-func CreateCommit(comm Commit) {
+func CreateCommit(commit Commit) {
+	db, err := sql.Open("sqlite3", "./scribe.db")
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	defer db.Close()
+
+	transaction, err := db.Begin()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	statement, err := transaction.Prepare(`
+        INSERT INTO records (project, hours, message, timestamp)
+        VALUES (?, ?, ?, ?);
+    `)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer statement.Close()
+
+	_, err = statement.Exec(commit.Project, commit.Hours, commit.Message, time.Now().UTC())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	transaction.Commit()
 }

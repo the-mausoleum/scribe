@@ -40,5 +40,5 @@ func DoCommit(args []string) {
 
 	fmt.Println(commit)
 
-	Connect()
+	CreateCommit(commit)
 }

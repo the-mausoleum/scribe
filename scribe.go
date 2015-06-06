@@ -38,6 +38,8 @@ func main() {
 		os.Exit(0)
 	}
 
+	Connect()
+
 	switch strings.ToLower(os.Args[1]) {
 	case "commit":
 		DoCommit(os.Args[2:])
