@@ -63,3 +63,34 @@ func CreateCommit(commit Commit) {
 
 	transaction.Commit()
 }
+
+func DeleteProject(project string) {
+	db, err := sql.Open("sqlite3", "./scribe.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer db.Close()
+
+	transaction, err := db.Begin()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	statement, err := transaction.Prepare(`
+        DELETE FROM records
+        WHERE project = ?;
+    `)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer statement.Close()
+
+	_, err = statement.Exec(project)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	transaction.Commit()
+}

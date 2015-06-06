@@ -43,6 +43,8 @@ func main() {
 	switch strings.ToLower(os.Args[1]) {
 	case "commit":
 		DoCommit(os.Args[2:])
+	case "delete":
+		DoDelete(os.Args[2:])
 	default:
 		fmt.Printf(Usage, os.Args[0])
 		os.Exit(0)
